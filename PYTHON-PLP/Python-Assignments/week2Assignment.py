@@ -1,3 +1,4 @@
+#PLP Week 2 Assignment
 # Step 1: Create an empty list
 my_list = []
 
