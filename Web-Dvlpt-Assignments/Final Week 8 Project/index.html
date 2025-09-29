@@ -8,64 +8,189 @@
 </head>
 <body>
   <header>
-    <h1>Hotel Management System</h1>
+    <h1>🏨 Hotel Management System</h1>
+    <div id="user-info" style="display: none;">
+      <span id="welcome-msg"></span>
+      <button id="logoutBtn">Logout</button>
+    </div>
   </header>
-
+  
   <main>
-    <!-- Login Section -->
-    <section id="login-form">
-      <h2>User Login</h2>
-      <form id="loginForm">
-        <label for="username">Username:</label>
-        <input type="text" id="username" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" required>
-        <button type="submit">Login</button>
-      </form>
+    <!-- Login/Register Toggle -->
+    <section id="auth-section">
+      <div class="auth-container">
+        <div class="auth-tabs">
+          <button class="tab-btn active" data-tab="login">Login</button>
+          <button class="tab-btn" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" class="auth-form active">
+          <h2>User Login</h2>
+          <form id="loginForm">
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" required>
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" required>
+            <button type="submit">Login</button>
+          </form>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register-form" class="auth-form">
+          <h2>Create Account</h2>
+          <form id="registerForm">
+            <label for="reg-fullname">Full Name:</label>
+            <input type="text" id="reg-fullname" required>
+            <label for="reg-username">Username:</label>
+            <input type="text" id="reg-username" required>
+            <label for="reg-email">Email:</label>
+            <input type="email" id="reg-email" required>
+            <label for="reg-phone">Phone:</label>
+            <input type="tel" id="reg-phone" placeholder="+254...">
+            <label for="reg-password">Password:</label>
+            <input type="password" id="reg-password" required minlength="6">
+            <label for="reg-confirm-password">Confirm Password:</label>
+            <input type="password" id="reg-confirm-password" required>
+            <button type="submit">Register</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room Selection Section (Customer) -->
+    <section id="room-selection" style="display: none;">
+      <h2>Available Rooms</h2>
+      <div class="search-filters">
+        <div class="filter-group">
+          <label for="filter-type">Room Type:</label>
+          <select id="filter-type">
+            <option value="">All Types</option>
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
+            <option value="Suite">Suite</option>
+            <option value="Deluxe">Deluxe</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="check-in">Check In:</label>
+          <input type="date" id="check-in" required>
+        </div>
+        <div class="filter-group">
+          <label for="check-out">Check Out:</label>
+          <input type="date" id="check-out" required>
+        </div>
+        <button id="searchRooms" class="btn-primary">Search Available Rooms</button>
+      </div>
+      <div id="rooms-list"></div>
     </section>
 
     <!-- Booking Form -->
     <section id="booking-form" style="display: none;">
-      <h2>Book a Room</h2>
+      <h2>Complete Your Booking</h2>
+      <div id="selected-room-info"></div>
       <form id="roomForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" required>
-        <label for="roomType">Room Type:</label>
-        <select id="roomType" required>
-          <option value="Single">Single - $50/night</option>
-          <option value="Double">Double - $80/night</option>
-          <option value="Suite">Suite - $120/night</option>
-        </select>
-        <label for="nights">Nights:</label>
-        <input type="number" id="nights" min="1" required>
-        <button type="submit">Book Now</button>
+        <label for="guest-name">Guest Name:</label>
+        <input type="text" id="guest-name" required>
+        <label for="guest-email">Email:</label>
+        <input type="email" id="guest-email" required>
+        <label for="guest-phone">Phone:</label>
+        <input type="tel" id="guest-phone" required>
+        <label for="num-guests">Number of Guests:</label>
+        <input type="number" id="num-guests" min="1" value="1" required>
+        <label for="special-requests">Special Requests:</label>
+        <textarea id="special-requests" rows="3" placeholder="Any special requirements..."></textarea>
+        <button type="submit" class="btn-primary">Proceed to Payment</button>
+        <button type="button" id="cancelBooking" class="btn-secondary">Cancel</button>
       </form>
     </section>
 
     <!-- Payment Section -->
     <section id="payment-section" style="display: none;">
-      <h2>Payment</h2>
+      <h2>Payment Details</h2>
+      <div id="payment-summary"></div>
       <form id="paymentForm">
         <label for="cardName">Cardholder Name:</label>
         <input type="text" id="cardName" required>
         <label for="cardNumber">Card Number:</label>
-        <input type="text" id="cardNumber" required>
+        <input type="text" id="cardNumber" maxlength="16" placeholder="1234567890123456" required>
         <label for="expDate">Expiry Date:</label>
-        <input type="text" id="expDate" placeholder="MM/YY" required>
+        <input type="text" id="expDate" placeholder="MM/YY" maxlength="5" required>
         <label for="cvc">CVC:</label>
-        <input type="text" id="cvc" required>
-        <button type="submit">Pay Now</button>
+        <input type="text" id="cvc" maxlength="3" placeholder="123" required>
+        <button type="submit" class="btn-primary">Complete Payment</button>
+        <button type="button" id="cancelPayment" class="btn-secondary">Back</button>
       </form>
+    </section>
+
+    <!-- User Bookings Dashboard -->
+    <section id="user-bookings" style="display: none;">
+      <h2>My Bookings</h2>
+      <button id="backToRooms" class="btn-secondary">Book New Room</button>
+      <div id="user-bookings-list"></div>
     </section>
 
     <!-- Admin Dashboard -->
     <section id="admin-dashboard" style="display: none;">
       <h2>Admin Dashboard</h2>
-      <button id="viewBookings">View All Bookings</button>
-      <ul id="adminBookingList"></ul>
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="manage-rooms">Manage Rooms</button>
+        <button class="admin-tab-btn" data-tab="view-bookings">View Bookings</button>
+      </div>
+
+      <!-- Manage Rooms Tab -->
+      <div id="manage-rooms" class="admin-panel active">
+        <h3>Room Management</h3>
+        <button id="showAddRoom" class="btn-primary">Add New Room</button>
+        
+        <div id="add-room-form" style="display: none;">
+          <h4>Add New Room</h4>
+          <form id="addRoomForm">
+            <label for="room-number">Room Number:</label>
+            <input type="text" id="room-number" required>
+            <label for="room-type">Room Type:</label>
+            <select id="room-type" required>
+              <option value="Single">Single</option>
+              <option value="Double">Double</option>
+              <option value="Suite">Suite</option>
+              <option value="Deluxe">Deluxe</option>
+            </select>
+            <label for="room-price">Price per Night ($):</label>
+            <input type="number" id="room-price" min="1" step="0.01" required>
+            <label for="room-capacity">Capacity:</label>
+            <input type="number" id="room-capacity" min="1" required>
+            <label for="room-description">Description:</label>
+            <textarea id="room-description" rows="3"></textarea>
+            <label for="room-amenities">Amenities (comma separated):</label>
+            <input type="text" id="room-amenities" placeholder="WiFi, TV, AC">
+            <button type="submit" class="btn-primary">Add Room</button>
+            <button type="button" id="cancelAddRoom" class="btn-secondary">Cancel</button>
+          </form>
+        </div>
+
+        <div id="rooms-management-list"></div>
+      </div>
+
+      <!-- View Bookings Tab -->
+      <div id="view-bookings" class="admin-panel">
+        <h3>All Bookings</h3>
+        <div class="booking-filters">
+          <select id="booking-status-filter">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="checked_in">Checked In</option>
+            <option value="checked_out">Checked Out</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button id="filterBookings" class="btn-primary">Filter</button>
+        </div>
+        <div id="adminBookingList"></div>
+      </div>
     </section>
   </main>
 
+  <div id="notification" class="notification"></div>
   <script src="script.js"></script>
 </body>
 </html>
